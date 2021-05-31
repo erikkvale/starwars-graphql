@@ -1,6 +1,6 @@
 from enum import Enum
 from uuid import UUID, uuid4
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, create_model
 
 
 class Affiliation(str, Enum):
@@ -14,13 +14,19 @@ class Character(BaseModel):
     last_name: str
     affiliation: Affiliation
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 if __name__ == "__main__":
     data = {
-        "id": uuid4(),
+        "id": 123,
         "first_name": "Erik",
         "last_name": "Kvale",
-        "affiliation": "Rebel Allianc"
+        "affiliation": "Rebel Alliance"
     }
-    print(Character(**data))
+    erik = Character(**data)
+    print(erik.id)
+    # print(Character.schema_json(indent=2))
 
